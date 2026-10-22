@@ -103,6 +103,79 @@ The TF-IDF and embedding retrievers are alternative retrieval approaches. The di
 | Evaluation artifacts | JSON reports |
 | Version control | Git and GitHub |
 
+## Test Strategy and Failure Analysis
+
+The test suite validates both conventional software behavior and AI-specific quality risks. It uses pytest assertions, parameterized test cases, and mocked responses to exercise evaluation failures in a repeatable way.
+
+### Test coverage
+
+| Scenario | Expected behavior | Quality risk detected |
+|---|---|---|
+| Answerable policy question | Return an answer with a valid source | Missing or incorrect source attribution |
+| Unsupported or out-of-scope question | Abstain and avoid selecting a policy source | Unsupported answer generation |
+| Fabricated answer | Fail groundedness validation | Claims that contradict policy evidence |
+| Correct paraphrase | Pass the implemented groundedness check | Overly strict matching of equivalent wording |
+| Empty answer or evidence | Fail groundedness validation | Missing content or missing supporting evidence |
+| Missing policy source | Fail citation and groundedness checks | Invalid source attribution |
+| Prompt-injection attempt | Preserve the policy's security rule | Instructions that attempt to override policy requirements |
+| Contradictory extra claim | Fail the evaluation pipeline | A correct statement followed by an unsafe or unsupported claim |
+| Critical-severity failure | Block release | High-impact quality failures |
+| Low-severity failure | Do not block release under the tested rule | Severity-aware release decisions |
+| Empty retrieval benchmark | Return defined zero-valued metrics | Edge cases in metric calculation |
+
+### Retrieval metrics
+
+The retrieval benchmark distinguishes these outcomes:
+
+- **Correct retrieval:** The selected policy source matches the expected source.
+- **Wrong source:** A source is returned, but it is not the expected policy.
+- **False abstention:** The system abstains when the question is answerable.
+- **False acceptance:** The system selects a source for a question expected to be unsupported.
+- **Correct abstention:** The system abstains when no supported answer is expected.
+
+These metrics should be interpreted alongside the dataset size and the individual test cases. A high aggregate pass rate can conceal weaknesses in untested scenarios.
+
+### Example failure investigation: Unsupported OTP claim
+
+**Scenario:** A generated response correctly states that customers should never share their OTP, but then adds that sharing it after employee verification is safe.
+
+**Expected behavior:** The evaluation must fail because the additional statement contradicts the policy evidence.
+
+**Test approach:** The test suite supplies a mocked assistant response and synthetic policy document to the evaluation pipeline, then asserts that groundedness fails and the overall case does not pass.
+
+**Why this matters:** Checking only for required keywords would be insufficient. A response could contain the correct security phrase and still introduce a dangerous contradiction.
+
+### Example failure investigation: Incorrect citation
+
+**Scenario:** The response contains a supported statement but cites `missing_policy.md`, while the available evidence comes from `account_security.md`.
+
+**Expected behavior:** Citation validation and groundedness validation fail, and the evaluation case does not pass.
+
+**Test approach:** The test uses mocked assistant output and policy documents to verify that an unavailable source is rejected.
+
+### Release-gating behavior
+
+The test suite checks three release decisions:
+
+- A passing critical case allows the tested release gate to pass.
+- A failing critical case blocks the release.
+- A low-severity failure does not block the release under the current tested rule.
+
+These tests validate the configured release-gating logic. They do not establish that the severity classifications or release policy are sufficient for production banking systems.
+
+### Test limitations and future work
+
+The current tests provide useful coverage of selected failure patterns, but additional validation would strengthen the framework:
+
+- Expand answerable, unanswerable, and paraphrased question datasets.
+- Test incorrect and incomplete evidence, including cases with multiple plausible sources.
+- Measure precision and recall on a larger labelled retrieval dataset.
+- Test contradictory and partially grounded responses with broader examples.
+- Validate thresholds and release rules against representative evaluation data.
+- Add regression comparisons across model, prompt, retrieval, and configuration changes.
+
+These are recommended extensions, not claims that the current implementation already covers every scenario.
+
 ## Evaluation Results
 
 The repository's documented development checkpoint reports the following results:
