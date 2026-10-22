@@ -36,6 +36,69 @@ TEST_CASES = [
 ]
 
 
+def calculate_retrieval_metrics(results: list[dict]) -> dict:
+    """Calculate retrieval and abstention metrics from benchmark results."""
+
+    answerable = [
+        result for result in results
+        if result["expected_source"] is not None
+    ]
+    unsupported = [
+        result for result in results
+        if result["expected_source"] is None
+    ]
+
+    correct_retrievals = sum(
+        result["actual_source"] == result["expected_source"]
+        for result in answerable
+    )
+    wrong_sources = sum(
+        result["actual_source"] is not None
+        and result["actual_source"] != result["expected_source"]
+        for result in answerable
+    )
+    false_abstentions = sum(
+        result["actual_source"] is None
+        for result in answerable
+    )
+    false_acceptances = sum(
+        result["actual_source"] is not None
+        for result in unsupported
+    )
+    correct_abstentions = sum(
+        result["actual_source"] is None
+        for result in unsupported
+    )
+
+    def rate(count: int, denominator: int) -> float:
+        return round(count / denominator, 3) if denominator else 0.0
+
+    return {
+        "answerable_cases": len(answerable),
+        "unsupported_cases": len(unsupported),
+        "correct_retrievals": correct_retrievals,
+        "wrong_sources": wrong_sources,
+        "false_abstentions": false_abstentions,
+        "false_acceptances": false_acceptances,
+        "correct_abstentions": correct_abstentions,
+        "correct_retrieval_rate": rate(
+            correct_retrievals, len(answerable)
+        ),
+        "wrong_source_rate": rate(
+            wrong_sources, len(answerable)
+        ),
+        "false_abstention_rate": rate(
+            false_abstentions, len(answerable)
+        ),
+        "false_acceptance_rate": rate(
+            false_acceptances, len(unsupported)
+        ),
+        "correct_abstention_rate": rate(
+            correct_abstentions, len(unsupported)
+        ),
+    }
+
+
 def run_retrieval_benchmark() -> dict:
     results = []
 
@@ -63,7 +126,8 @@ def run_retrieval_benchmark() -> dict:
         "total_cases": total,
         "matched_cases": matched_count,
         "failed_cases": total - matched_count,
-        "accuracy": round(matched_count / total, 3) if total else 0,
+        "accuracy": round(matched_count / total, 3) if total else 0.0,
+        "metrics": calculate_retrieval_metrics(results),
         "results": results,
     }
 
@@ -84,7 +148,12 @@ if __name__ == "__main__":
     print(f"Matched cases: {report['matched_cases']}")
     print(f"Failed cases: {report['failed_cases']}")
     print(f"Accuracy: {report['accuracy']:.0%}")
-    print(f"Report: {REPORT_PATH}")
+    print("\nRetrieval quality metrics:")
+
+    for name, value in report["metrics"].items():
+        print(f"  {name}: {value}")
+
+    print(f"\nReport: {REPORT_PATH}")
 
     for result in report["results"]:
         status = "PASS" if result["matched"] else "FAIL"

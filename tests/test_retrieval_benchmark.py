@@ -1,58 +1,56 @@
-
 import json
 from unittest.mock import patch
 
 from app import run_retrieval_benchmark as benchmark
 
+def test_retrieval_metrics_calculate_correctly():
+    results = [
+        {
+            "expected_source": "account_security.md",
+            "actual_source": "account_security.md",
+        },
+        {
+            "expected_source": "card_disputes.md",
+            "actual_source": "account_security.md",
+        },
+        {
+            "expected_source": "account_security.md",
+            "actual_source": None,
+        },
+        {
+            "expected_source": None,
+            "actual_source": None,
+        },
+        {
+            "expected_source": None,
+            "actual_source": "card_disputes.md",
+        },
+    ]
 
-def test_retrieval_benchmark_all_cases_match():
-    with patch.object(
-        benchmark,
-        "retrieve_policy",
-    ) as mock_retrieve:
-        mock_retrieve.side_effect = [
-            {"source": "account_security.md", "evidence": "evidence", "score": 0.4},
-            {"source": "account_security.md", "evidence": "evidence", "score": 0.3},
-            {"source": "card_disputes.md", "evidence": "evidence", "score": 0.3},
-            {"source": "account_security.md", "evidence": "evidence", "score": 0.4},
-            {"source": None, "evidence": "", "score": 0},
-        ]
+    metrics = benchmark.calculate_retrieval_metrics(results)
 
-        report = benchmark.run_retrieval_benchmark()
+    assert metrics["answerable_cases"] == 3
+    assert metrics["unsupported_cases"] == 2
+    assert metrics["correct_retrievals"] == 1
+    assert metrics["wrong_sources"] == 1
+    assert metrics["false_abstentions"] == 1
+    assert metrics["false_acceptances"] == 1
+    assert metrics["correct_abstentions"] == 1
 
-    assert report["total_cases"] == 5
-    assert report["matched_cases"] == 5
-    assert report["failed_cases"] == 0
-    assert report["accuracy"] == 1.0
+    assert metrics["correct_retrieval_rate"] == 0.333
+    assert metrics["wrong_source_rate"] == 0.333
+    assert metrics["false_abstention_rate"] == 0.333
+    assert metrics["false_acceptance_rate"] == 0.5
+    assert metrics["correct_abstention_rate"] == 0.5
 
 
-def test_retrieval_benchmark_writes_json_report(tmp_path):
-    report_path = tmp_path / "retrieval_benchmark_report.json"
+def test_retrieval_metrics_handle_empty_results():
+    metrics = benchmark.calculate_retrieval_metrics([])
 
-    with (
-        patch.object(benchmark, "REPORT_PATH", report_path),
-        patch.object(
-            benchmark,
-            "retrieve_policy",
-        ) as mock_retrieve,
-    ):
-        mock_retrieve.side_effect = [
-            {"source": "account_security.md", "evidence": "evidence", "score": 0.4},
-            {"source": "account_security.md", "evidence": "evidence", "score": 0.3},
-            {"source": "card_disputes.md", "evidence": "evidence", "score": 0.3},
-            {"source": "account_security.md", "evidence": "evidence", "score": 0.4},
-            {"source": None, "evidence": "", "score": 0},
-        ]
-
-        benchmark.run_retrieval_benchmark()
-
-    assert report_path.exists()
-
-    saved_report = json.loads(
-        report_path.read_text(encoding="utf-8")
-    )
-
-    assert saved_report["total_cases"] == 5
-    assert saved_report["matched_cases"] == 5
-    assert saved_report["accuracy"] == 1.0
-    assert len(saved_report["results"]) == 5
+    assert metrics["answerable_cases"] == 0
+    assert metrics["unsupported_cases"] == 0
+    assert metrics["correct_retrieval_rate"] == 0.0
+    assert metrics["wrong_source_rate"] == 0.0
+    assert metrics["false_abstention_rate"] == 0.0
+    assert metrics["false_acceptance_rate"] == 0.0
+    assert metrics["correct_abstention_rate"] == 0.0

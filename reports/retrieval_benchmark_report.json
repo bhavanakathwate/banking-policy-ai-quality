@@ -4,13 +4,27 @@
   "matched_cases": 5,
   "failed_cases": 0,
   "accuracy": 1.0,
+  "metrics": {
+    "answerable_cases": 4,
+    "unsupported_cases": 1,
+    "correct_retrievals": 4,
+    "wrong_sources": 0,
+    "false_abstentions": 0,
+    "false_acceptances": 0,
+    "correct_abstentions": 1,
+    "correct_retrieval_rate": 1.0,
+    "wrong_source_rate": 0.0,
+    "false_abstention_rate": 0.0,
+    "false_acceptance_rate": 0.0,
+    "correct_abstention_rate": 1.0
+  },
   "results": [
     {
       "name": "Unauthorized account access",
       "question": "What should I do if someone accessed my account without permission?",
       "expected_source": "account_security.md",
       "actual_source": "account_security.md",
-      "score": 0.4,
+      "score": 0.4314378414307018,
       "matched": true
     },
     {
@@ -18,7 +32,7 @@
       "question": "Should I tell a bank employee my OTP?",
       "expected_source": "account_security.md",
       "actual_source": "account_security.md",
-      "score": 0.3,
+      "score": 0.29160897643877964,
       "matched": true
     },
     {
@@ -26,7 +40,7 @@
       "question": "How do I report a transaction I don't recognize?",
       "expected_source": "card_disputes.md",
       "actual_source": "card_disputes.md",
-      "score": 0.3,
+      "score": 0.2949437072429061,
       "matched": true
     },
     {
@@ -34,7 +48,7 @@
       "question": "How can I secure my account if I suspect unauthorized access?",
       "expected_source": "account_security.md",
       "actual_source": "account_security.md",
-      "score": 0.4,
+      "score": 0.3904874252870254,
       "matched": true
     },
     {
