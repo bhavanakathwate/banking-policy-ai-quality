@@ -1,0 +1,89 @@
+{
+  "retriever": "Ollama embeddings (nomic-embed-text)",
+  "total_cases": 10,
+  "matched_cases": 10,
+  "failed_cases": 0,
+  "accuracy": 1.0,
+  "results": [
+    {
+      "name": "Unauthorized account access",
+      "question": "What should I do if someone accessed my account without permission?",
+      "expected_source": "account_security.md",
+      "actual_source": "account_security.md",
+      "score": 0.7479,
+      "matched": true
+    },
+    {
+      "name": "OTP sharing",
+      "question": "Should I tell a bank employee my OTP?",
+      "expected_source": "account_security.md",
+      "actual_source": "account_security.md",
+      "score": 0.7798,
+      "matched": true
+    },
+    {
+      "name": "Unfamiliar transaction",
+      "question": "How do I report a transaction I don't recognize?",
+      "expected_source": "card_disputes.md",
+      "actual_source": "card_disputes.md",
+      "score": 0.7486,
+      "matched": true
+    },
+    {
+      "name": "Account security guidance",
+      "question": "How can I secure my account if I suspect unauthorized access?",
+      "expected_source": "account_security.md",
+      "actual_source": "account_security.md",
+      "score": 0.8057,
+      "matched": true
+    },
+    {
+      "name": "Unrelated weather question",
+      "question": "What is the weather on Mars?",
+      "expected_source": null,
+      "actual_source": null,
+      "score": 0.3594,
+      "matched": true
+    },
+    {
+      "name": "Paraphrased account compromise",
+      "question": "I think a stranger got into my bank account. How can I protect it?",
+      "expected_source": "account_security.md",
+      "actual_source": "account_security.md",
+      "score": 0.6896,
+      "matched": true
+    },
+    {
+      "name": "Transaction dispute required details",
+      "question": "What information should I provide when challenging a card payment?",
+      "expected_source": "card_disputes.md",
+      "actual_source": "card_disputes.md",
+      "score": 0.7153,
+      "matched": true
+    },
+    {
+      "name": "Sensitive information safety",
+      "question": "Is it safe to send my PIN or password in a chat message?",
+      "expected_source": "card_disputes.md",
+      "actual_source": "card_disputes.md",
+      "score": 0.719,
+      "matched": true
+    },
+    {
+      "name": "Unrelated cooking question",
+      "question": "How long should I bake a chocolate cake?",
+      "expected_source": null,
+      "actual_source": null,
+      "score": 0.4192,
+      "matched": true
+    },
+    {
+      "name": "Refund guarantee policy",
+      "question": "Can you guarantee that I will get my money back tomorrow?",
+      "expected_source": "card_disputes.md",
+      "actual_source": "card_disputes.md",
+      "score": 0.6006,
+      "matched": true
+    }
+  ]
+}

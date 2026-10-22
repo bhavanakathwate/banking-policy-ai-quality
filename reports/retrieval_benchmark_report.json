@@ -1,0 +1,49 @@
+{
+  "retriever": "TF-IDF",
+  "total_cases": 5,
+  "matched_cases": 5,
+  "failed_cases": 0,
+  "accuracy": 1.0,
+  "results": [
+    {
+      "name": "Unauthorized account access",
+      "question": "What should I do if someone accessed my account without permission?",
+      "expected_source": "account_security.md",
+      "actual_source": "account_security.md",
+      "score": 0.4,
+      "matched": true
+    },
+    {
+      "name": "OTP sharing",
+      "question": "Should I tell a bank employee my OTP?",
+      "expected_source": "account_security.md",
+      "actual_source": "account_security.md",
+      "score": 0.3,
+      "matched": true
+    },
+    {
+      "name": "Unfamiliar transaction",
+      "question": "How do I report a transaction I don't recognize?",
+      "expected_source": "card_disputes.md",
+      "actual_source": "card_disputes.md",
+      "score": 0.3,
+      "matched": true
+    },
+    {
+      "name": "Account security guidance",
+      "question": "How can I secure my account if I suspect unauthorized access?",
+      "expected_source": "account_security.md",
+      "actual_source": "account_security.md",
+      "score": 0.4,
+      "matched": true
+    },
+    {
+      "name": "Unrelated weather question",
+      "question": "What is the weather on Mars?",
+      "expected_source": null,
+      "actual_source": null,
+      "score": 0,
+      "matched": true
+    }
+  ]
+}

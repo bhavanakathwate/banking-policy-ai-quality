@@ -1,0 +1,19 @@
+
+# Python virtual environments
+.venv/
+venv/
+
+# Python cache and test artifacts
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.coverage
+htmlcov/
+
+# Local environment variables and secrets
+.env
+.env.*
+
+# Local embedding cache (regenerated as needed)
+reports/embedding_cache.json
+reports/test

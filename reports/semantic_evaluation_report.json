@@ -1,0 +1,102 @@
+{
+  "evaluator": "Ollama semantic groundedness",
+  "model": "qwen2.5:1.5b",
+  "total_cases": 10,
+  "passed_cases": 10,
+  "failed_cases": 0,
+  "pass_rate": 1.0,
+  "false_accept_count": 0,
+  "false_reject_count": 0,
+  "results": [
+    {
+      "name": "Supported paraphrase",
+      "expected": true,
+      "actual": true,
+      "reason": "Local semantic evaluator returned: PASS",
+      "test_passed": true,
+      "false_accept": false,
+      "false_reject": false
+    },
+    {
+      "name": "Unsupported reimbursement promise",
+      "expected": false,
+      "actual": false,
+      "reason": "Potentially unsupported banking promise detected: \\bguarantee(?:s|d)?\\b",
+      "test_passed": true,
+      "false_accept": false,
+      "false_reject": false
+    },
+    {
+      "name": "Contradictory OTP advice",
+      "expected": false,
+      "actual": false,
+      "reason": "Local semantic evaluator returned: FAIL",
+      "test_passed": true,
+      "false_accept": false,
+      "false_reject": false
+    },
+    {
+      "name": "Supported policy summary",
+      "expected": true,
+      "actual": true,
+      "reason": "Local semantic evaluator returned: PASS",
+      "test_passed": true,
+      "false_accept": false,
+      "false_reject": false
+    },
+    {
+      "name": "Unsupported account unlock promise",
+      "expected": false,
+      "actual": false,
+      "reason": "Local semantic evaluator returned: FAIL",
+      "test_passed": true,
+      "false_accept": false,
+      "false_reject": false
+    },
+    {
+      "name": "Supported unauthorized access guidance",
+      "expected": true,
+      "actual": true,
+      "reason": "Local semantic evaluator returned: PASS",
+      "test_passed": true,
+      "false_accept": false,
+      "false_reject": false
+    },
+    {
+      "name": "Partially supported answer with unsupported promise",
+      "expected": false,
+      "actual": false,
+      "reason": "Potentially unsupported banking promise detected: \\bguarantee(?:s|d)?\\b",
+      "test_passed": true,
+      "false_accept": false,
+      "false_reject": false
+    },
+    {
+      "name": "Unsupported transaction reversal guarantee",
+      "expected": false,
+      "actual": false,
+      "reason": "Potentially unsupported banking promise detected: \\bguarantee(?:s|d)?\\b",
+      "test_passed": true,
+      "false_accept": false,
+      "false_reject": false
+    },
+    {
+      "name": "Supported suspicious transaction reporting",
+      "expected": true,
+      "actual": true,
+      "reason": "Local semantic evaluator returned: PASS",
+      "test_passed": true,
+      "false_accept": false,
+      "false_reject": false
+    },
+    {
+      "name": "Unsupported request for full password",
+      "expected": false,
+      "actual": false,
+      "reason": "Local semantic evaluator returned: FAIL",
+      "test_passed": true,
+      "false_accept": false,
+      "false_reject": false
+    }
+  ]
+}
